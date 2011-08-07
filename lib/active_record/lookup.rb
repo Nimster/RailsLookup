@@ -69,7 +69,7 @@ module Lookup
 
       #Define the getter
       define_method("#{as_name.to_s}") do 
-        id = read_attribute "@#{as_name.to_s}_id".to_sym
+        id = read_attribute "#{as_name.to_s}_id".to_sym
         if not id.nil?
           value = cls.name_for id
           if value.nil?
