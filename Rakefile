@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'  
 require 'echoe'  
   
-Echoe.new('rails_lookup', '0.0.1') do |s|  
+Echoe.new('rails_lookup', '0.0.2') do |s|  
   s.description = File.read(File.join(File.dirname(__FILE__), 'README')) 
   s.summary     = "Lookup table macro for ActiveRecords" 
   s.url             = "http://github.com/Nimster/RailsLookup/"

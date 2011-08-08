@@ -2,17 +2,19 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rails_lookup}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Nimrod Priell}]
-  s.date = %q{2011-08-06}
+  s.date = %q{2011-08-08}
   s.description = %q{Lookup tables with ruby-on-rails
 --------------------------------
 
 By: Nimrod Priell
 
 This gem adds an ActiveRecord macro to define memory-cached, dynamically growing, normalized lookup tables for entity 'type'-like objects. Or in plain English - if you want to have a table containing, say, ProductTypes which can grow with new types simply when you refer to them, and not keep the Product table containing a thousand repeating 'type="book"' entries - sit down and try to follow through.
+
+Installation is described down the page.
 
 Motivation
 ----------
@@ -90,6 +92,7 @@ I've looked thoroughly for a nice rails solution to this, but after failing to f
 
 Installation
 ------------
+First, run `gem install rails_lookup` to install the latest version of the gem.
 
 The result of this hook is that you get the exact syntax described above, with only two lines of code (no extra classes or anything):
 In your ActiveRecord object simply add
@@ -149,13 +152,14 @@ I hope this helped you and saved a lot of time and frustration. Follow me on twi
 }
   s.email = %q{@nimrodpriell}
   s.extra_rdoc_files = [%q{README}, %q{lib/active_record/lookup.rb}]
-  s.files = [%q{README}, %q{Rakefile}, %q{lib/active_record/lookup.rb}, %q{Manifest}, %q{rails_lookup.gemspec}]
+  s.files = [%q{README}, %q{Rakefile}, %q{lib/active_record/lookup.rb}, %q{rails_lookup.gemspec}, %q{test/20110808002412_create_test_lookup_db.rb}, %q{test/test_lookup.rb} ]
   s.homepage = %q{http://github.com/Nimster/RailsLookup/}
   s.rdoc_options = [%q{--line-numbers}, %q{--inline-source}, %q{--title}, %q{Rails_lookup}, %q{--main}, %q{README}]
   s.require_paths = [%q{lib}]
   s.rubyforge_project = %q{rails_lookup}
   s.rubygems_version = %q{1.8.7}
   s.summary = %q{Lookup table macro for ActiveRecords}
+  s.test_files = [%q{test/test_lookup.rb}]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
