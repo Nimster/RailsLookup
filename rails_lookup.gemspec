@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rails_lookup}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Nimrod Priell}]
-  s.date = %q{2011-08-08}
+  s.date = %q{2011-08-09}
   s.description = %q{Lookup tables with ruby-on-rails
 --------------------------------
 
@@ -152,7 +152,7 @@ I hope this helped you and saved a lot of time and frustration. Follow me on twi
 }
   s.email = %q{@nimrodpriell}
   s.extra_rdoc_files = [%q{README}, %q{lib/active_record/lookup.rb}]
-  s.files = [%q{README}, %q{Rakefile}, %q{lib/active_record/lookup.rb}, %q{rails_lookup.gemspec}, %q{test/20110808002412_create_test_lookup_db.rb}, %q{test/test_lookup.rb} ]
+  s.files = [%q{README}, %q{Rakefile}, %q{lib/active_record/lookup.rb}, %q{rails_lookup.gemspec}, %q{test/20110808002412_create_test_lookup_db.rb}, %q{test/test_lookup.rb}]
   s.homepage = %q{http://github.com/Nimster/RailsLookup/}
   s.rdoc_options = [%q{--line-numbers}, %q{--inline-source}, %q{--title}, %q{Rails_lookup}, %q{--main}, %q{README}]
   s.require_paths = [%q{lib}]
