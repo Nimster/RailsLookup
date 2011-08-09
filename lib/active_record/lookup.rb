@@ -105,26 +105,26 @@ module ActiveRecord
         #Rails ActiveRecord support:
         @cls_for_name = {} if @cls_for_name.nil?
         @cls_for_name[as_name.to_s.to_sym] = cls
-        #We need to override this for the dynamic finders.
-        def method_missing(method_id, *arguments, &block)
-          if match = ActiveRecord::DynamicFinderMatch.match(method_id)
-            #reroute kind to _kind_id
-            idxs = match.attribute_names.collect.with_index { |n,i| [i,n.to_sym] if @cls_for_name.has_key? n.to_sym }.compact
-            idxs.each do |elm|
-              if method_id =~ /^find_by_/
-                arguments[elm[0]] = @cls_for_name[elm[1]].gen_id_for arguments[elm[0]] #Change the argument
-              end
-            end 
-          end 
-          super
-        end
 
-        def where(opts, *rest)
-          #Change the values of the keys in the lookup to their ids
-          mapped = opts.map { |k,v| @cls_for_name.has_key?(k) ? [k, @cls_for_name[k].id_for(v)] : [k, v] }
-          opts = Hash[mapped]
+        #This makes find_and_create_by, find_all and where methods all work as
+        #they should. This will not work if you use reset_column_information,
+        #like if you use find_by_session_id in SessionStore. You must redefine
+        #it so it re-sets rel to this singleton object
+        rel = ActiveRecord::Relation.new(self, arel_table)
+        def rel.where(opts, *rest)
+          if opts.is_a? Hash
+            mapped = opts.map { |k,v| @cls_for_name.has_key?(k.to_sym) ? [k, @cls_for_name[k.to_sym].id_for(v)] : [k, v] }
+            opts = Hash[mapped]
+          end
           super(opts, *rest)
         end
+
+        def rel.cls_for_name=(cls_for_name)
+          @cls_for_name = cls_for_name
+        end
+
+        rel.cls_for_name = @cls_for_name
+        instance_variable_set(:@relation, rel)
 
         #Might need to be in class_eval
         belongs_to lookup_name.to_s.to_sym, :foreign_key => "#{as_name}_id"

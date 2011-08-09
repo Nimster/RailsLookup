@@ -120,29 +120,53 @@ class TestLookup < MiniTest::Unit::TestCase
     bimba2 = Car.find_by_kind "Compact"
     assert_equal bimba, bimba2
     assert_equal "Yellow", bimba2.color
+    cars = Car.find_all_by_color "Yellow"
+    assert_equal 2, cars.size
+    cars = Car.find_all_by_kind "Compact"
+    assert_equal 1, cars.size
     bimba2 = Car.find_by_kind_and_color_and_name "Compact", "Yellow", "Bimba"
     assert_equal bimba, bimba2
     assert_equal "Yellow", bimba2.color
     assert_equal "Compact", bimba2.kind
+    cars_before_creation = Car.count
     susita = Car.find_or_create_by_name_and_kind_and_color "Susita", "Compact", "Gray"
     assert_equal "Gray", susita.color
     assert_equal "Compact", susita.kind
+    assert_equal cars_before_creation + 1, Car.count
     bimba2 = Car.find_or_create_by_name_and_kind_and_color "Bimba", "Compact", "Yellow"
     assert_equal "Yellow", bimba2.color
     assert_equal "Compact", bimba2.kind
     assert_equal "Bimba", bimba2.name
+    assert_equal cars_before_creation + 1, Car.count
+    p Car.all
     f16 = Plane.find_or_create_by_kind_and_name "Fighter Jet", "F-16"
     assert_equal "Fighter Jet", f16.kind
     assert_equal "F-16", f16.name
     ferrari = Car.find_or_create_by_kind_and_color "Sports", "Yellow"
     assert_equal "Yellow", ferrari.color
     assert_equal "Sports", ferrari.kind
+    assert_equal cars_before_creation + 1, Car.count
     batmobile = Car.find_or_create_by_kind_and_color "Fantasy", "Black"
     assert_equal "Black", batmobile.color
     assert_equal "Fantasy", batmobile.kind
+    assert_equal cars_before_creation + 2, Car.count
     assert_equal 3, CarKind.count
     assert_equal 3, CarColor.count
     assert_equal 1, PlaneKind.count
+    batmobile2 = Car.find_or_initialize_by_color "Black"
+    refute batmobile.new_record?
+    assert_equal batmobile, batmobile2
+    batmobile2 = Car.find_or_initialize_by_color_and_kind "Black", "Fantasy"
+    refute batmobile.new_record?
+    assert_equal batmobile, batmobile2
+    bimba2 = Car.find_or_initialize_by_name "Bimba"
+    refute bimba2.new_record?
+    assert_equal bimba, bimba2
+    delorhean = Car.find_or_initialize_by_color_and_kind "Grey", "Fantasy"
+    assert delorhean.new_record?
+    assert_equal "Grey", delorhean.color
+    assert_equal "Fantasy", delorhean.kind
+    delorhean.save!
   end
 
   #This test will issue warnings as we re-set existing constants
