@@ -46,7 +46,8 @@ module ActiveRecord
               id = id_for val
               if id.nil?
                 #Define this new possible value
-                new_db_obj = find_or_create_by_name val #You could just override this...
+                #You could just override this...
+                new_db_obj = find_or_create_by_name val 
                 id_for val, new_db_obj.id
                 name_for new_db_obj.id, val
                 id = new_db_obj.id
@@ -58,8 +59,8 @@ module ActiveRecord
               class_variable_get(:@@caches)[id] ||= name
             end
 
-            #This is especially useful for tests - you want deletion to also clear
-            #the caches otherwise odd stuff might happen
+            #This is especially useful for tests - you want deletion to also
+            #clear the caches otherwise odd stuff might happen
             def self.delete_all(*args)
               class_variable_set :@@caches, []
               class_variable_set :@@rcaches, {}
@@ -113,7 +114,13 @@ module ActiveRecord
         rel = ActiveRecord::Relation.new(self, arel_table)
         def rel.where(opts, *rest)
           if opts.is_a? Hash
-            mapped = opts.map { |k,v| @cls_for_name.has_key?(k.to_sym) ? [k, @cls_for_name[k.to_sym].id_for(v)] : [k, v] }
+            mapped = opts.map do |k,v| 
+              if @cls_for_name.has_key?(k.to_sym) 
+                [k, @cls_for_name[k.to_sym].id_for(v)] 
+              else
+                [k, v] 
+              end
+            end
             opts = Hash[mapped]
           end
           super(opts, *rest)
@@ -130,9 +137,9 @@ module ActiveRecord
         belongs_to lookup_name.to_s.to_sym, :foreign_key => "#{as_name}_id"
         validates as_name.to_s.to_sym, :presence => true
 
-        #Prefill the hashes from the DB:
+        # Prefill the hashes from the DB - requires an active connection
         all_vals = cls.all
-        #No need for the class_exec
+        # No need for the class_exec
         cls.class_variable_set(:@@rcaches, all_vals.inject({}) do |r, obj|
           r[obj.name] = obj.id
           r

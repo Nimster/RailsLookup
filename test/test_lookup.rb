@@ -1,14 +1,34 @@
-require 'lookup'
+require 'active_record'
+require 'active_record/lookup'
 require 'minitest/autorun'
+require '20110808002412_create_test_lookup_db'
+
+
+# It sucks we have to do that in testing code, but I have to establish a
+# connection prior to defining any classes that use lookups, and I see no other
+# way around it other than extracting the test classes and requiring them only
+# after the connection is established in setup() - which might be a nice
+# solution but muddles things up.
+# Establish a connection to the test database:
+ActiveRecord::Base.establish_connection(
+  adapter: "sqlite3", 
+  database: "test/test.sqlite3",
+  pool: 5,
+  timeout: 5000
+)
+puts "Established connection!"
+migration = CreateTestLookupDb.new
+migration.migrate(:down)
+migration.migrate(:up)
 
 class Car < ActiveRecord::Base
-  include Lookup
+  include ActiveRecord::Lookup
   lookup :car_kind, :as => :kind
   lookup :car_color, :as => :color
 end
 
 class Plane < ActiveRecord::Base
-  include Lookup
+  include ActiveRecord::Lookup
   lookup :plane_kind, :as => :kind
 end
 
@@ -23,6 +43,9 @@ class TestLookup < MiniTest::Unit::TestCase
   end
 
   def clear_tables
+    # In every test you ever do, these calls will be required for all lookup
+    # tables involved, since they take care of clearing the (static) caches.
+    # Otherwise, you'd have a stale cache in the lookup class.
     Car.delete_all
     CarKind.delete_all
     CarColor.delete_all
@@ -129,11 +152,13 @@ class TestLookup < MiniTest::Unit::TestCase
     assert_equal "Yellow", bimba2.color
     assert_equal "Compact", bimba2.kind
     cars_before_creation = Car.count
-    susita = Car.find_or_create_by_name_and_kind_and_color "Susita", "Compact", "Gray"
+    susita = Car.find_or_create_by_name_and_kind_and_color(\
+        "Susita", "Compact", "Gray")
     assert_equal "Gray", susita.color
     assert_equal "Compact", susita.kind
     assert_equal cars_before_creation + 1, Car.count
-    bimba2 = Car.find_or_create_by_name_and_kind_and_color "Bimba", "Compact", "Yellow"
+    bimba2 = Car.find_or_create_by_name_and_kind_and_color(\
+        "Bimba", "Compact", "Yellow")
     assert_equal "Yellow", bimba2.color
     assert_equal "Compact", bimba2.kind
     assert_equal "Bimba", bimba2.name
@@ -179,7 +204,7 @@ class TestLookup < MiniTest::Unit::TestCase
     #We get a new CarKind class - but this one will be preloaded
     tmp = CarKind
     Class.new(ActiveRecord::Base) do
-      include Lookup
+      include ActiveRecord::Lookup
       lookup :car_kind
     end
     refute_nil CarKind.id_for("Compact")
@@ -210,38 +235,3 @@ class TestLookup < MiniTest::Unit::TestCase
   end
 end
 
-=begin
-a = TestLookup.new
-puts "Cache hits: "
-puts(TestLookupKind.id_for "simian")
-puts "Setting test_lookup_kind: "
-a.test_lookup_kind="simian"
-puts "Reading test_lookup_kind: "
-puts a.test_lookup_kind
-puts a.test_lookup_kind_id
-
-puts "Hacking the ID: "
-a.test_lookup_kind_id = 1
-puts a.test_lookup_kind
-
-puts "Setting another_lookup_kind: "
-a.another_lookup_kind="simian"
-puts "Reading another_lookup_kind: "
-puts a.another_lookup_kind
-puts a.another_lookup_kind_id
-
-b = TestLookupKind.new
-puts "HERE"
-p TestLookupKind.all
-
-puts "Testing different class"
-b = OneMore.new
-b.taverna_kind = "williwok"
-puts b.taverna_kind
-puts b.taverna_kind_id
-
-puts "Testing original class: "
-puts a.test_lookup_kind
-puts a.another_lookup_kind
-
-=end

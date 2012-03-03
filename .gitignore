@@ -2,3 +2,4 @@ pkg
 doc
 Manifest
 *.sw*
+test/test.sqlite3
