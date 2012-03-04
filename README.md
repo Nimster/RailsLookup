@@ -9,22 +9,131 @@ Installation is described down the page.
 ## Motivation
 
 A [normalized DB][1] means that you want to keep types as separate tables, with foreign keys pointing from your main entity to its type. For instance, instead of 
-ID          | car_name        | car_type
-1           | Chevrolet Aveo  | Compact
-2           | Ford Fiesta     | Compact
-3           | BMW Z-5         | Sports
+
+<table>
+  <tr>
+    <td>
+      ID
+    </td>
+    <td>
+      car_name
+    </td>
+    <td>
+      car_type
+    </td>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Chevrolet Aveo
+    </td>
+    <td>
+      Compact
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Ford Fiesta
+    </td>
+    <td>
+      Compact
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      BMW Z-5
+    </td>
+    <td>
+      Sports
+    </td>
+  </tr>
+</table>
 
 You want to have two tables:
-ID  | car_name        | car_type_id
-1   | Chevrolet Aveo  | 1
-2   | Ford Fiesta     | 1
-3   | BMW Z-5         | 2
+
+<table>
+  <tr>
+    <td>
+      ID
+    </td>
+    <td>
+      car_name
+    </td>
+    <td>
+      car_type_id
+    </td>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Chevrolet Aveo
+    </td>
+    <td>
+      1
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Ford Fiesta
+    </td>
+    <td>
+      1
+    </td>
+  </tr>
+  <tr>
+    <td>
+      3
+    </td>
+    <td>
+      BMW Z-5
+    </td>
+    <td>
+      2
+    </td>
+  </tr>
+</table>
 
 And
 
-car_type_id | car_type_name 
-1           | Compact
-2           | Sports
+<table>
+  <tr>
+    <td>
+      car_type_id
+    </td>
+    <td>
+      car_type_name
+    </td>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Compact
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2
+    </td>
+    <td>
+      Sports
+    </td>
+  </tr>
+</table>
 
 The pros/cons of a normalized DB can be discussed elsewhere. I'd just point out a denormalized solution is most useful in settings like [column oriented DBMSes][2]. For the rest of us folks using standard databases, we usually want to use lookups.
 
