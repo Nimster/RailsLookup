@@ -203,7 +203,7 @@ In your ActiveRecord object simply add
     require 'active_record/lookup'
     class Car < ActiveRecord::Base
       #...
-      include ActiveRecord::Lookup
+      include RailsLookup
       lookup :car_type
       #...
     end
