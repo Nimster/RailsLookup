@@ -137,8 +137,10 @@ And
 
 The pros/cons of a normalized DB can be discussed elsewhere. I'd just point out a denormalized solution is most useful in settings like [column oriented DBMSes][2]. For the rest of us folks using standard databases, we usually want to use lookups.
 
-The usual way to do this with ruby on rails is
+The usual way to do this with ruby on rails is:
+
 * Generate a CarType model using `rails generate model CarType name:string`
+
 * Link between CarType and Car tables using `belongs_to` and `has_many`
 
 Then to work with this you can transparently read the car type:
