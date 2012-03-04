@@ -204,7 +204,7 @@ In your ActiveRecord object simply add
     class Car < ActiveRecord::Base
       #...
       include RailsLookup
-      lookup :car_type
+      lookup :car_type, :as => :type
       #...
     end
 
@@ -216,10 +216,22 @@ That's it. the generated CarType class (which you won't see as a car_type.rb fil
 and you can still hack at the underlying ID for an object, if you need to:
 
     car = car.all.first
-    car.car_type = "Sports"
-    car.car_type_id #Returns 2
-    car.car_type_id = 1
-    car.car_type #Returns "Compact"
+    car.type = "Sports"
+    car.type_id #Returns 2
+    car.type_id = 1
+    car.type #Returns "Compact"
+
+You can also do
+
+    Car.find_all_by_type('Compact')
+
+and so on.
+
+The lookup macro takes a parameter which will be the name of the generated class
+and table. Therefore it has to be unique in the project: If you have both car
+types and engine types, each must have a differently-named lookup. However, for
+terseness, the `:as` parameter lets you specify a short alias so you can call
+`car.type` and not `car.car_type`.
 
 The only remaining thing is to define your migrations for creating the actual database tables. After all, that's something you only want to do once and not every time this class loads, so this isn't the place for it. However, it's easy enough to create your own scaffolds so that 
 
@@ -235,9 +247,12 @@ will automatically create the migration
         end
     
         remove_column :cars, :car_type #Let's assume you have one of those now…
-        add_column :cars, :car_type_id, :integer #Maybe put not_null constraints here.
+        add_column :cars, :type, :integer #Maybe put not_null constraints here.
       end
     end
+
+Note that the name of the table is the lookup name while the column that refers
+to that table is named after the shorthand `:as` alias.
 
 (The change syntax is specific to Rails 3.2. You will need to use .up and .down
 for Rails < 3.2)
