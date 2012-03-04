@@ -11,16 +11,15 @@ require '20110808002412_create_test_lookup_db'
 # after the connection is established in setup() - which might be a nice
 # solution but muddles things up.
 # Establish a connection to the test database:
-ActiveRecord::Base.establish_connection(
+conn = ActiveRecord::Base.establish_connection(
   adapter: "sqlite3", 
   database: "test/test.sqlite3",
   pool: 5,
   timeout: 5000
 )
-puts "Established connection!"
-migration = CreateTestLookupDb.new
-migration.migrate(:down) # Connection has to be established for this to work
-migration.migrate(:up)
+puts "Established connection!" unless conn.nil?
+CreateTestLookupDb.migrate(:down) # Connection has to be established for this to work
+CreateTestLookupDb.migrate(:up)
 
 class Car < ActiveRecord::Base
   include RailsLookup
