@@ -195,7 +195,7 @@ I've looked thoroughly for a nice rails solution to this, but after failing to f
 Either run `gem install rails_lookup` to install the latest version of the gem,
 or preferably add the rails_lookup dependency to your project's `Gemfile`:
 
-   gem 'rails_lookup' 
+    gem 'rails_lookup' 
 
 The result of this hook is that you get the exact syntax described above, with only two lines of code (no extra classes or anything):
 In your ActiveRecord object simply add
@@ -245,8 +245,8 @@ for Rails < 3.2)
 I'll let you work out the details for actually migrating the data you already
 have yourself. 
 
-[1] http://en.wikipedia.org/wiki/Database_normalization
-[2] http://en.wikipedia.org/wiki/Column-oriented_DBMS
+[1]: http://en.wikipedia.org/wiki/Database_normalization
+[2]: http://en.wikipedia.org/wiki/Column-oriented_DBMS
 
 I hope this helped you and saved a lot of time and frustration. Follow me on twitter: @nimrodpriell
 
