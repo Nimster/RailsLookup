@@ -134,7 +134,7 @@ module ActiveRecord
         instance_variable_set(:@relation, rel)
 
         #Might need to be in class_eval
-        belongs_to lookup_name.to_s.to_sym, :foreign_key => "#{as_name}_id"
+        belongs_to lookup_name.to_s.to_sym, :foreign_key => "#{as_name}"
         validates as_name.to_s.to_sym, :presence => true
 
         # Prefill the hashes from the DB - requires an active connection

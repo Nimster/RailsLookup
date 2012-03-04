@@ -3,7 +3,6 @@ require 'active_record/lookup'
 require 'minitest/autorun'
 require '20110808002412_create_test_lookup_db'
 
-
 # It sucks we have to do that in testing code, but I have to establish a
 # connection prior to defining any classes that use lookups, and I see no other
 # way around it other than extracting the test classes and requiring them only
@@ -18,13 +17,19 @@ ActiveRecord::Base.establish_connection(
 )
 puts "Established connection!"
 migration = CreateTestLookupDb.new
-migration.migrate(:down)
+migration.migrate(:down) # Connection has to be established for this to work
 migration.migrate(:up)
 
 class Car < ActiveRecord::Base
   include ActiveRecord::Lookup
   lookup :car_kind, :as => :kind
   lookup :car_color, :as => :color
+
+  # Example of how to scope for lookups
+  scope :by_color, lambda { |color| 
+    joins(:car_color)\
+      .where({:car_colors => { name: color }})
+  }
 end
 
 class Plane < ActiveRecord::Base
@@ -232,6 +237,14 @@ class TestLookup < MiniTest::Unit::TestCase
     ferrari = Car.create! :kind => "Sports", :color => "Yellow"
 #    yellow = CarColor.find_by_name "Yellow"
 #    assert_equal 2, yellow.cars.size
+  end
+
+  # TODO: Test a scope
+  def test_scopes
+    bimba = Car.create! :name => "Bimba", :kind => "Compact", :color => "Yellow"
+    ferrari = Car.create! :kind => "Sports", :color => "Red"
+    assert_equal 1, Car.by_color("Yellow").count 
+    assert_equal 1, Car.by_color("Red").count
   end
 end
 
