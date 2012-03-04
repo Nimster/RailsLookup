@@ -3,3 +3,7 @@ doc
 Manifest
 *.sw*
 test/test.sqlite3
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
