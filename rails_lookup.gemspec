@@ -23,6 +23,6 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [%q{README}, %q{lib/rails_lookup.rb}]
   s.rdoc_options = [%q{--line-numbers}, %q{--inline-source}, %q{--title}, %q{rails_lookup}, %q{--main}, %q{README}]
 
-  s.add_dependency 'rails', '3.0.9'
+  s.add_dependency 'rails'
   s.add_development_dependency 'sqlite3'
 end

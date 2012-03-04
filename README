@@ -140,3 +140,16 @@ I'll let you work out the details for actually migrating the data yourself.
 
 I hope this helped you and saved a lot of time and frustration. Follow me on twitter: @nimrodpriell
 
+TESTING
+-------
+
+    rvm gemset create rails_lookup_devel
+    gem install bundler
+    bundle install
+    rake test
+
+That should basically do it. The gems required are managed in the Gemfile, they
+are currently Rails and SQLite (which is used only for testing). This has been
+tested to work with rails-3.0.9
+
+
