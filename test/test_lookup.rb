@@ -1,5 +1,5 @@
 require 'active_record'
-require 'active_record/lookup'
+#require 'rails_lookup.rb'
 require 'minitest/autorun'
 require '20110808002412_create_test_lookup_db'
 

@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.description = %q{Lookup tables with ruby-on-rails}
 
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*_test.rb`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   s.extra_rdoc_files = [%q{README}, %q{lib/rails_lookup.rb}]
