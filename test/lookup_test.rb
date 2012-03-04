@@ -1,5 +1,7 @@
 require 'active_record'
-#require 'rails_lookup.rb'
+$:.push File.expand_path('lib')
+#$:.push File.expand_path('../lib', __FILE__)
+require 'rails_lookup'
 require 'minitest/autorun'
 require '20110808002412_create_test_lookup_db'
 
@@ -21,7 +23,7 @@ migration.migrate(:down) # Connection has to be established for this to work
 migration.migrate(:up)
 
 class Car < ActiveRecord::Base
-  include ActiveRecord::Lookup
+  include RailsLookup
   lookup :car_kind, :as => :kind
   lookup :car_color, :as => :color
 
@@ -33,11 +35,11 @@ class Car < ActiveRecord::Base
 end
 
 class Plane < ActiveRecord::Base
-  include ActiveRecord::Lookup
+  include RailsLookup
   lookup :plane_kind, :as => :kind
 end
 
-class TestLookup < MiniTest::Unit::TestCase
+class LookupTest < MiniTest::Unit::TestCase
 
   def setup
     clear_tables
@@ -209,7 +211,7 @@ class TestLookup < MiniTest::Unit::TestCase
     #We get a new CarKind class - but this one will be preloaded
     tmp = CarKind
     Class.new(ActiveRecord::Base) do
-      include ActiveRecord::Lookup
+      include RailsLookup
       lookup :car_kind
     end
     refute_nil CarKind.id_for("Compact")
