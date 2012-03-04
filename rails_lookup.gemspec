@@ -20,7 +20,8 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  s.extra_rdoc_files = [%q{README}, %q{lib/active_record/lookup.rb}]
+  s.extra_rdoc_files = [%q{README}, %q{lib/rails_lookup.rb}]
   s.rdoc_options = [%q{--line-numbers}, %q{--inline-source}, %q{--title}, %q{rails_lookup}, %q{--main}, %q{README}]
 
+  s.add_dependency 'rails', '3.0.9'
 end
