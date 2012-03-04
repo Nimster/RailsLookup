@@ -37,7 +37,7 @@ class Plane < ActiveRecord::Base
   lookup :plane_kind, :as => :kind
 end
 
-class LookupTest < MiniTest::Unit::TestCase
+class TestLookup < MiniTest::Unit::TestCase
 
   def setup
     clear_tables
