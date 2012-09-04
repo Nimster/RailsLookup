@@ -138,7 +138,9 @@ module RailsLookup
 
       #Might need to be in class_eval
       belongs_to lookup_name.to_s.to_sym, :foreign_key => "#{as_name}"
-      validates as_name.to_s.to_sym, :presence => true
+      if opts[:presence] != false
+        validates as_name.to_s.to_sym, :presence => true
+      end
 
       # Prefill the hashes from the DB - requires an active connection
       all_vals = cls.all
