@@ -233,6 +233,9 @@ types and engine types, each must have a differently-named lookup. However, for
 terseness, the `:as` parameter lets you specify a short alias so you can call
 `car.type` and not `car.car_type`.
 
+The lookup macro also can have the `:presence` parameter which when set to `false`
+allows the lookup attr to be nil. The default is that the lookup has to be present.
+
 The only remaining thing is to define your migrations for creating the actual database tables. After all, that's something you only want to do once and not every time this class loads, so this isn't the place for it. However, it's easy enough to create your own scaffolds so that 
 
      rails generate migration create_car_type_lookup_for_car
