@@ -46,6 +46,7 @@ module RailsLookup
           end
 
           def self.gen_id_for(val)
+            return nil if val.nil?
             id = id_for val
             if id.nil?
               #Define this new possible value
