@@ -41,6 +41,11 @@ class Plane < ActiveRecord::Base
   lookup :plane_kind, :as => :kind
 end
 
+class Spaceship < ActiveRecord::Base
+  include RailsLookup
+  lookup :cargo, :presence => false
+end
+
 class LookupTest < MiniTest::Unit::TestCase
 
   def setup
@@ -100,6 +105,8 @@ class LookupTest < MiniTest::Unit::TestCase
     ferrari_reloaded = Car.all.last
     assert_equal "Yellow", ferrari_reloaded.color
     assert_equal "Sports", ferrari_reloaded.kind
+    empty_spaceship = Spaceship.create!(:name => "Nautilus")
+    assert_equal nil, empty_spaceship.cargo
   end
 
   def test_string_setting_and_getting
