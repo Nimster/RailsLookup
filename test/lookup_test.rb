@@ -18,7 +18,10 @@ conn = ActiveRecord::Base.establish_connection(
   timeout: 5000
 )
 puts "Established connection!" unless conn.nil?
-CreateTestLookupDb.migrate(:down) # Connection has to be established for this to work
+begin
+  CreateTestLookupDb.migrate(:down) # Connection has to be established for this to work
+rescue
+end
 CreateTestLookupDb.migrate(:up)
 
 class Car < ActiveRecord::Base
