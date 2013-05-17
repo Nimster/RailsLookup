@@ -17,10 +17,19 @@ class CreateTestLookupDb < ActiveRecord::Migration
 
       t.timestamps
     end
+    create_table :spaceships do |t|
+      t.integer :cargo
+      t.string :name
+
+      t.timestamps
+    end
     create_table :plane_kinds do |t|
       t.string :name
     end
     create_table :car_colors do |t|
+      t.string :name
+    end
+    create_table :cargos do |t|
       t.string :name
     end
   end
@@ -31,5 +40,7 @@ class CreateTestLookupDb < ActiveRecord::Migration
     drop_table :car_colors
     drop_table :planes
     drop_table :plane_kinds
+    drop_table :spaceships
+    drop_table :cargos
   end
 end

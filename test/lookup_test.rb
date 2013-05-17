@@ -18,7 +18,10 @@ conn = ActiveRecord::Base.establish_connection(
   timeout: 5000
 )
 puts "Established connection!" unless conn.nil?
-CreateTestLookupDb.migrate(:down) # Connection has to be established for this to work
+begin
+  CreateTestLookupDb.migrate(:down) # Connection has to be established for this to work
+rescue
+end
 CreateTestLookupDb.migrate(:up)
 
 class Car < ActiveRecord::Base
@@ -36,6 +39,11 @@ end
 class Plane < ActiveRecord::Base
   include RailsLookup
   lookup :plane_kind, :as => :kind
+end
+
+class Spaceship < ActiveRecord::Base
+  include RailsLookup
+  lookup :cargo, :presence => false
 end
 
 class LookupTest < MiniTest::Unit::TestCase
@@ -97,6 +105,12 @@ class LookupTest < MiniTest::Unit::TestCase
     ferrari_reloaded = Car.all.last
     assert_equal "Yellow", ferrari_reloaded.color
     assert_equal "Sports", ferrari_reloaded.kind
+    empty_spaceship = Spaceship.create!(:name => "Nautilus")
+    assert_equal nil, empty_spaceship.cargo
+    unloaded_spaceship = Spaceship.create!(:name => "Event Horizon", :cargo => "Black Matter")
+    assert_equal "Black Matter", unloaded_spaceship.cargo
+    unloaded_spaceship.cargo= nil
+    assert_equal nil, unloaded_spaceship.cargo
   end
 
   def test_string_setting_and_getting
